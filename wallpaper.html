@@ -1,0 +1,106 @@
+<html>
+    <head>
+        <style>
+            body, html {
+                background-color: #111111;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+
+            .center {
+                top: 50%;
+                left: 50%;
+                position: fixed;
+                transform: translateX(-50%) translateY(-50%);
+                width: 100px;
+            }
+            
+            #engineer {
+                bottom: 0;
+                right: 12vw;
+                position: fixed;
+                width: 120px;
+                display: none;
+            }
+
+            #clock-container {
+                top: 6vh;
+                right: 6vw;
+                text-align: right;
+                color: white;
+                position: fixed;
+                font-size: 5vh;
+            }
+            
+            #clock {
+                margin-bottom: 0;
+            }
+
+            #warning {
+                margin-top: 0;
+                font-size: 2vh;
+                color: #888;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="clock-container">
+            <p id="clock"></p>
+            <p id="warning">go to sleep...</p>
+        </div>
+        <img id="banana" class="center" src="banana.gif">
+        <img id="engineer" class="center" src="engineer.gif">
+        <script>
+            let engineer = document.getElementById("engineer");
+            let banana = document.getElementById("banana");
+            let warning = document.getElementById("warning");
+
+            let engineerMinute = -1; // the minute the engineer will be shown
+            let engineerHour = -1; // hour of last engineer check
+
+            function startTime() {
+                const today = new Date();
+                let h = today.getHours();
+                let m = today.getMinutes();
+                let s = today.getSeconds();
+                m = checkTime(m);
+                s = checkTime(s);
+                document.getElementById('clock').innerHTML =  h + ":" + m + ":" + s;
+                
+                if (h > 23 || h < 5) {
+                    warning.style.display = "block";
+                } else {
+                    warning.style.display = "none";
+                }
+
+                if (m == engineerMinute) {
+                    engineer.style.display  = "block";
+                    banana.style.display = "none";
+                } else {
+                    engineer.style.display  = "none";
+                    banana.style.display = "block";
+                }
+
+                engineerCheck(h);
+                setTimeout(startTime, 1000);
+            }
+
+            function checkTime(i) {
+                if (i < 10) {i = "0" + i}; 
+                return i;
+            }
+
+            function engineerCheck(h) {
+                if (engineerHour != h) {
+                    engineerMinute = Math.floor(Math.random() * 60);
+                    console.log(engineerMinute);
+                    engineerHour = h;
+                    console.log(h);
+                }
+            }
+
+            window.onload = function() {
+                startTime();
+            }
+        </script>
+    </body>
+</html>
